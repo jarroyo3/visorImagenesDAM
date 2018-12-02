@@ -52,7 +52,13 @@ namespace WindowsFormsApp1
         {
             if (abrirFicheroDialog.ShowDialog() != DialogResult.Cancel)
             {
+                if (visor.Num_Fotos() > 0)
+                {
+                    visor = new Visor(displayImagen.Width, displayImagen.Height);
+                }
+
                 int nbImagesCargadas = abrirFicheroDialog.FileNames.Length;
+
                 if (nbImagesCargadas > 0)
                 {
                     this.nombreFotos = new string[nbImagesCargadas];
@@ -106,7 +112,7 @@ namespace WindowsFormsApp1
                 displayImagen.Image = visor.Prev_Foto();
                 estableceInformacionFooter(this.nombreFotos[visor.Num_Actual]);
             }
-            else
+            else 
             {
                 muestraError(TITULO_VENTANA_ERROR_GENERAL, MENSAJE_VENTANA_ERROR_GENERAL);
             }
@@ -275,6 +281,11 @@ namespace WindowsFormsApp1
             else if (e.Control && e.Shift && e.KeyCode == Keys.Down)
             {
                 iniciaDesplazamiento(0, -10);
+            } else if (e.KeyCode == Keys.Left)
+            {
+                displayImagen.Image = visor.Prev_Foto();
+            } else if (e.KeyCode == Keys.Right) {
+                displayImagen.Image = visor.Next_Foto();
             }
         }
 
