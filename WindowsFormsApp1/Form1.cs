@@ -1,31 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿namespace WindowsFormsApp1 {
+    using System;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using Visor2;
 
-using Visor2;
-namespace WindowsFormsApp1
-{
-    public partial class Form1 : Form
-    {
+    /// <summary>
+    /// Defines the <see cref="Form1" />
+    /// </summary>
+    public partial class Form1 : Form {
+        /// <summary>
+        /// Defines the visor
+        /// </summary>
         private Visor visor;
+
+        /// <summary>
+        /// Defines the COEFICIENTE_ZOOM_AUMENTAR
+        /// </summary>
         private const float COEFICIENTE_ZOOM_AUMENTAR = 1.1f;
+
+        /// <summary>
+        /// Defines the COEFICIENTE_ZOOM_REDUCIR
+        /// </summary>
         private const float COEFICIENTE_ZOOM_REDUCIR = 0.9f;
+
+        /// <summary>
+        /// Defines the TITULO_VENTANA_ERROR_GENERAL
+        /// </summary>
         private const String TITULO_VENTANA_ERROR_GENERAL = "Aviso";
+
+        /// <summary>
+        /// Defines the MENSAJE_VENTANA_ERROR_GENERAL
+        /// </summary>
         private const String MENSAJE_VENTANA_ERROR_GENERAL = "No has añadido ninguna foto aún.";
+
+        /// <summary>
+        /// Defines the locationYLabelFooter
+        /// </summary>
         private int locationYLabelFooter;
+
+        /// <summary>
+        /// Defines the alturaVentana
+        /// </summary>
         private int alturaVentana;
+
+        /// <summary>
+        /// Defines the nombreFotos
+        /// </summary>
         private string[] nombreFotos;
+
+        /// <summary>
+        /// Defines the controlZoom
+        /// </summary>
         private int controlZoom;
 
-        public Form1()
-        {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// </summary>
+        public Form1() {
             visor = new Visor(958, 415);
             InitializeComponent();
             alturaVentana = this.Size.Height;
@@ -33,37 +65,48 @@ namespace WindowsFormsApp1
             controlZoom = 0;
         }
 
-        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// The abrirToolStripMenuItem_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e) {
             abrirFicheroDialog.ShowDialog();
         }
 
-        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// The salirToolStripMenuItem_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Close();
         }
 
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
+        /// <summary>
+        /// The toolStrip1_ItemClicked
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="ToolStripItemClickedEventArgs"/></param>
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
         }
 
-        private void cargarFicheroBrn_Click(object sender, EventArgs e)
-        {
-            if (abrirFicheroDialog.ShowDialog() != DialogResult.Cancel)
-            {
-                if (visor.Num_Fotos() > 0)
-                {
+        /// <summary>
+        /// The cargarFicheroBrn_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void cargarFicheroBrn_Click(object sender, EventArgs e) {
+            if (abrirFicheroDialog.ShowDialog() != DialogResult.Cancel) {
+                if (visor.Num_Fotos() > 0) {
                     visor = new Visor(displayImagen.Width, displayImagen.Height);
                 }
 
                 int nbImagesCargadas = abrirFicheroDialog.FileNames.Length;
 
-                if (nbImagesCargadas > 0)
-                {
+                if (nbImagesCargadas > 0) {
                     this.nombreFotos = new string[nbImagesCargadas];
-                    for (int i = 0; i < nbImagesCargadas; i++)
-                    {
+                    for (int i = 0; i < nbImagesCargadas; i++) {
                         visor.Agregar_Foto(abrirFicheroDialog.FileNames[i]);
                         nombreFotos[i] = System.IO.Path.GetFileName(abrirFicheroDialog.SafeFileNames[i]);
                     }
@@ -74,150 +117,189 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void estableceInformacionFooter(string nombreFichero)
-        {
+        /// <summary>
+        /// The estableceInformacionFooter
+        /// </summary>
+        /// <param name="nombreFichero">The nombreFichero<see cref="string"/></param>
+        private void estableceInformacionFooter(string nombreFichero) {
             int numeroActual = visor.Num_Actual + 1;
             int total = visor.Num_Fotos();
             fotoInfoLabel.Text = nombreFichero + "      (" + numeroActual + "/" + total + ")";
-
         }
 
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
+        /// <summary>
+        /// The openFileDialog1_FileOk
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="CancelEventArgs"/></param>
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e) {
         }
 
-        private void siguienteFoto(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The siguienteFoto
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void siguienteFoto(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 displayImagen.Image = visor.Next_Foto();
                 estableceInformacionFooter(this.nombreFotos[visor.Num_Actual]);
-            }
-            else
-            {
+            } else {
                 muestraError(TITULO_VENTANA_ERROR_GENERAL, MENSAJE_VENTANA_ERROR_GENERAL);
             }
         }
 
-        private void muestraError(String titulo, String mensaje)
-        {
+        /// <summary>
+        /// The muestraError
+        /// </summary>
+        /// <param name="titulo">The titulo<see cref="String"/></param>
+        /// <param name="mensaje">The mensaje<see cref="String"/></param>
+        private void muestraError(String titulo, String mensaje) {
             MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK);
         }
 
-        private void anteriorFoto(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The anteriorFoto
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void anteriorFoto(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 displayImagen.Image = visor.Prev_Foto();
                 estableceInformacionFooter(this.nombreFotos[visor.Num_Actual]);
-            }
-            else 
-            {
+            } else {
                 muestraError(TITULO_VENTANA_ERROR_GENERAL, MENSAJE_VENTANA_ERROR_GENERAL);
             }
         }
 
-        private void addZoomClick(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The addZoomClick
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void addZoomClick(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 displayImagen.Image = visor.Zoom(COEFICIENTE_ZOOM_AUMENTAR);
                 controlZoom++;
-            }
-            else
-            {
+            } else {
                 muestraError(TITULO_VENTANA_ERROR_GENERAL, MENSAJE_VENTANA_ERROR_GENERAL);
             }
         }
 
-        private void reduceZoomClick(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The reduceZoomClick
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void reduceZoomClick(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 displayImagen.Image = visor.Zoom(COEFICIENTE_ZOOM_REDUCIR);
                 controlZoom--;
-            }
-            else
-            {
+            } else {
                 muestraError(TITULO_VENTANA_ERROR_GENERAL, MENSAJE_VENTANA_ERROR_GENERAL);
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+        /// <summary>
+        /// The Form1_Load
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void Form1_Load(object sender, EventArgs e) {
         }
 
-        private void salirToolBoxBtn(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// The salirToolBoxBtn
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void salirToolBoxBtn(object sender, EventArgs e) {
             this.Close();
         }
 
-        private void giraIzquierda(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The giraIzquierda
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void giraIzquierda(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 visor.rotar_antihor();
                 displayImagen.Image = visor.Foto_Actual();
             }
         }
 
-        private void girarDerecha(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The girarDerecha
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void girarDerecha(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 visor.rotar_hor();
                 displayImagen.Image = visor.Foto_Actual();
             }
         }
 
-        private void restaurarZoom(object sender, EventArgs e)
-        {
-            if (visor.Num_Fotos() > 0)
-            {
+        /// <summary>
+        /// The restaurarZoom
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void restaurarZoom(object sender, EventArgs e) {
+            if (visor.Num_Fotos() > 0) {
                 displayImagen.Image = visor.Zoom(0.0f);
                 controlZoom = 0;
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+        /// <summary>
+        /// The label1_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void label1_Click(object sender, EventArgs e) {
         }
 
-        private void displayImagen_Click(object sender, EventArgs e)
-        {
-
+        /// <summary>
+        /// The displayImagen_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void displayImagen_Click(object sender, EventArgs e) {
         }
 
-        private void onResizeWindow(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// The onResizeWindow
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void onResizeWindow(object sender, EventArgs e) {
 
             fijarFooter();
             redimensionarPictureBox();
         }
 
-        private void redimensionarPictureBox()
-        {
+        /// <summary>
+        /// The redimensionarPictureBox
+        /// </summary>
+        private void redimensionarPictureBox() {
             int altoPictureBox = this.displayImagen.Size.Height;
             int anchoPictureBox = this.displayImagen.Size.Width;
 
             visor.Resize(anchoPictureBox, altoPictureBox);
             displayImagen.Image = visor.Foto_Actual();
-
         }
 
-        private void fijarFooter()
-        {
+        /// <summary>
+        /// The fijarFooter
+        /// </summary>
+        private void fijarFooter() {
             int diferenciaAltura = 0;
 
-            if (this.Size.Height > this.alturaVentana)
-            {
+            if (this.Size.Height > this.alturaVentana) {
                 diferenciaAltura = this.Size.Height - alturaVentana;
-            }
-            else
-            {
+            } else {
                 diferenciaAltura = alturaVentana - this.Size.Height;
             }
 
@@ -228,22 +310,21 @@ namespace WindowsFormsApp1
             );
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
-        {
+        /// <summary>
+        /// The OnMouseWheel
+        /// </summary>
+        /// <param name="e">The e<see cref="MouseEventArgs"/></param>
+        protected override void OnMouseWheel(MouseEventArgs e) {
             base.OnMouseWheel(e);
-            if (visor.Num_Fotos() < 1)
-            {
+            if (visor.Num_Fotos() < 1) {
                 return;
             }
 
-            if (e.Delta > 0)
-            {
+            if (e.Delta > 0) {
                 // scroll up
 
                 displayImagen.Image = visor.Next_Foto();
-            }
-            else
-            {
+            } else {
                 // scroll down
                 displayImagen.Image = visor.Prev_Foto();
             }
@@ -251,46 +332,54 @@ namespace WindowsFormsApp1
             estableceInformacionFooter(this.nombreFotos[visor.Num_Actual]);
         }
 
-        private void iniciaDesplazamiento(int x, int y)
-        {
-            if (visor.Num_Fotos() > 0 && this.controlZoom > 0)
-            {
+        /// <summary>
+        /// The iniciaDesplazamiento
+        /// </summary>
+        /// <param name="x">The x<see cref="int"/></param>
+        /// <param name="y">The y<see cref="int"/></param>
+        private void iniciaDesplazamiento(int x, int y) {
+            if (visor.Num_Fotos() > 0 && this.controlZoom > 0) {
                 displayImagen.Image = visor.Despl(x, y);
             }
         }
 
-        private void cambiaPunteroMano(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// The cambiaPunteroMano
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void cambiaPunteroMano(object sender, EventArgs e) {
             if (visor.Num_Fotos() < 1) return;
             displayImagen.Cursor = Cursors.Hand;
         }
 
-        private void disparaEventosTeclado(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.Shift && e.KeyCode == Keys.Left)
-            {
+        /// <summary>
+        /// The disparaEventosTeclado
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="KeyEventArgs"/></param>
+        private void disparaEventosTeclado(object sender, KeyEventArgs e) {
+            if (e.Control && e.Shift && e.KeyCode == Keys.Left) {
                 iniciaDesplazamiento(10, 0);
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.Right) {
+            } else if (e.Control && e.Shift && e.KeyCode == Keys.Right) {
                 iniciaDesplazamiento(-10, 0);
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.Up)
-            {
+            } else if (e.Control && e.Shift && e.KeyCode == Keys.Up) {
                 iniciaDesplazamiento(0, 10);
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.Down)
-            {
+            } else if (e.Control && e.Shift && e.KeyCode == Keys.Down) {
                 iniciaDesplazamiento(0, -10);
-            } else if (e.KeyCode == Keys.Left)
-            {
+            } else if (e.KeyCode == Keys.Left) {
                 displayImagen.Image = visor.Prev_Foto();
             } else if (e.KeyCode == Keys.Right) {
                 displayImagen.Image = visor.Next_Foto();
             }
         }
 
-        private void mostrarAyuda(object sender, EventArgs e)
-        { 
+        /// <summary>
+        /// The mostrarAyuda
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
+        private void mostrarAyuda(object sender, EventArgs e) {
             new AyudaForm().ShowDialog();
         }
     }
